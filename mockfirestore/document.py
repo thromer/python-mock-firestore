@@ -1,7 +1,7 @@
 from copy import deepcopy
 from functools import reduce
 import operator
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 from mockfirestore import NotFound
 from mockfirestore._helpers import (
     Timestamp, Document, Store, get_by_path, set_by_path, delete_by_path
@@ -22,8 +22,8 @@ class DocumentSnapshot:
     def exists(self) -> bool:
         return self._doc != {}
 
-    def to_dict(self) -> Document:
-        return self._doc
+    def to_dict(self) -> Union[Dict[str, Any], None]:
+        return self._doc if self.exists else None
 
     @property
     def create_time(self) -> Timestamp:
