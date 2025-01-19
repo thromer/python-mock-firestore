@@ -24,7 +24,7 @@ class Query:
             for field_filter in field_filters:
                 self._add_field_filter(*field_filter)
 
-    def stream(self, transaction=None) -> Iterator[DocumentSnapshot]:
+    def stream(self, transaction=None, timeout: Union[float, None]=None) -> Iterator[DocumentSnapshot]:
         doc_snapshots = self.parent.stream()
 
         for field, compare, value in self._field_filters:
@@ -52,7 +52,7 @@ class Query:
 
         return iter(doc_snapshots)
 
-    def get(self) -> Iterator[DocumentSnapshot]:
+    def get(self, timeout: Union[float, None]=None) -> Iterator[DocumentSnapshot]:
         warnings.warn('Query.get is deprecated, please use Query.stream',
                       category=DeprecationWarning)
         return self.stream()
